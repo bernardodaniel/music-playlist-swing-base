@@ -1,9 +1,25 @@
 package br.com.dbs.java.mps.model;
 
-public class Musica {
-    
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class Musica implements Serializable {
+
+    private static final long serialVersionUID = 7662218935243422233L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
     private Integer duracao;
+    @ManyToOne
+    @JoinColumn(name = "cantor_id")
     private Cantor cantor;
 
     public String getNome() {

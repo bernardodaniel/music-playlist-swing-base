@@ -1,10 +1,28 @@
 package br.com.dbs.java.mps.model;
 
-public class Usuario {
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+
+@Entity
+public class Usuario implements Serializable{
+
+    private static final long serialVersionUID = -7160072910352434789L;
     
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(length = 255)
     private String nome;
+    @Column(length = 20)
     private String login;
+    @Column(length = 8)
     private String senha;
+    @OneToOne
     private Contato contato;
 
     /**
@@ -55,5 +73,6 @@ public class Usuario {
     public void setContato(Contato contato) {
         this.contato = contato;
     }
+    
     
 }
