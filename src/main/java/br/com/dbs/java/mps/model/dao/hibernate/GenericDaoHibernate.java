@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 public class GenericDaoHibernate<T> 
     implements GenericDao<T> {
@@ -34,6 +35,7 @@ public class GenericDaoHibernate<T>
             em.getTransaction().commit();
         } catch (Exception e) {
             em.getTransaction().rollback();
+            throw e;
         } finally {
             JPAUtil.closeEntityManager();
         }
@@ -55,11 +57,12 @@ public class GenericDaoHibernate<T>
     }
 
     @Override
-    public void remove(T entidade) {
+    public void remove(Long id) {
         EntityManager em = JPAUtil.createEntityManager();
         
         try {
             em.getTransaction().begin();
+            T entidade = em.find(classePersistente, id);
             em.remove(entidade);
             em.getTransaction().commit();
         } catch (Exception e) {
@@ -71,7 +74,12 @@ public class GenericDaoHibernate<T>
 
     @Override
     public List<T> lista() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = JPAUtil.createEntityManager();
+        Query q = em.createQuery("select t from " 
+                + getTypeClass().getSimpleName() + " t" );
+        
+        List lista = q.getResultList();
+        return lista;
     }
 
     @Override

@@ -19,7 +19,7 @@ public class Cantor implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String nome;
     @Column(length = 255)
     private String sobrenome;
@@ -27,6 +27,10 @@ public class Cantor implements Serializable {
     private Byte[] foto;
     @OneToMany(mappedBy = "cantor")
     private List<Musica> musicas;
+
+    public Long getId() {
+        return id;
+    }
 
     /**
      * @return the nome

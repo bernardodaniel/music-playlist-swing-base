@@ -8,7 +8,7 @@ public interface GenericDao<T> {
     
     void atualiza(T entidade);
     
-    void remove(T entidade);
+    void remove(Long id);
     
     List<T> lista();
     
