@@ -24,6 +24,10 @@ public class Contato implements Serializable {
     @Column(length = 15)
     private String celular;
 
+    public Long getId() {
+        return id;
+    }
+
     /**
      * @return the email
      */

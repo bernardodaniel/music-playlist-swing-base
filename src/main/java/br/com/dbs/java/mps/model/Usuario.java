@@ -1,6 +1,7 @@
 package br.com.dbs.java.mps.model;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,14 +17,16 @@ public class Usuario implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 255)
+    @Column(nullable = false)
     private String nome;
-    @Column(length = 20)
     private String login;
-    @Column(length = 8)
     private String senha;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Contato contato;
+
+    public Long getId() {
+        return id;
+    }
 
     /**
      * @return the nome
