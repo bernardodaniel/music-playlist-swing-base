@@ -1,6 +1,7 @@
 package br.com.dbs.java.mps.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,11 +17,16 @@ public class Musica implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String nome;
     private Integer duracao;
     @ManyToOne
     @JoinColumn(name = "cantor_id")
     private Cantor cantor;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getNome() {
         return nome;

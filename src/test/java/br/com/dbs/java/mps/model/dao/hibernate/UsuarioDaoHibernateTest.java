@@ -44,11 +44,11 @@ public class UsuarioDaoHibernateTest {
         
         Assert.assertNotNull(usuario.getId());
         
-        usuario.setNome("Raul");
+        usuario.setNome("João");
         
         dao.atualiza(usuario);
         
-        Assert.assertEquals("Raul", usuario.getNome());
+        Assert.assertEquals("João", usuario.getNome());
     }
     
     @Test
