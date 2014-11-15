@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ public class Playlist implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String nome;
     
     private Integer quantidadeDeExecucoes;
@@ -35,12 +36,16 @@ public class Playlist implements Serializable {
     
     private Integer duracaoTotal;
     
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "playlist_musica")
     private final List<Musica> musicas = new ArrayList<>();
 
     public void adicionaMusica(Musica musica) {
         musicas.add(musica);
+    }
+
+    public Long getId() {
+        return id;
     }
     
     /**
