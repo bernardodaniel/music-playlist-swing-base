@@ -24,7 +24,7 @@ public class Cantor implements Serializable {
     @Column(length = 255)
     private String sobrenome;
     @Lob
-    private Byte[] foto;
+    private byte[] foto;
     @OneToMany(mappedBy = "cantor")
     private List<Musica> musicas;
 
@@ -63,14 +63,14 @@ public class Cantor implements Serializable {
     /**
      * @return the foto
      */
-    public Byte[] getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
     /**
      * @param foto the foto to set
      */
-    public void setFoto(Byte[] foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 

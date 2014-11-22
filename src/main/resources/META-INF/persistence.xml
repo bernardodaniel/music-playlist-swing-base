@@ -9,9 +9,9 @@
     <class>br.com.dbs.java.mps.model.Usuario</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/playlist"/>
-      <property name="javax.persistence.jdbc.user" value="playlist"/>
+      <property name="javax.persistence.jdbc.user" value="play"/>
       <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
-      <property name="javax.persistence.jdbc.password" value="playlist"/>
+      <property name="javax.persistence.jdbc.password" value="play"/>
       <property name="hibernate.cache.provider_class" value="org.hibernate.cache.NoCacheProvider"/>
       <property name="hibernate.hbm2ddl.auto" value="create"/>
       <property name="hibernate.show_sql" value="true"/>
