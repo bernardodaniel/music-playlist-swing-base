@@ -7,6 +7,8 @@
 package br.com.dbs.java.mps.view;
 
 import br.com.dbs.java.mps.controller.CantorController;
+import br.com.dbs.java.mps.view.table.CantorTableModel;
+import java.awt.Frame;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
@@ -18,10 +20,8 @@ import javax.swing.JOptionPane;
  */
 public class CantorFrame extends javax.swing.JDialog {
 
-    /**
-     * Creates new form CantorFrame
-     */
-    public CantorFrame() {
+    public CantorFrame(Frame owner) {
+        super(owner);
         initComponents();
     }
 
@@ -47,7 +47,7 @@ public class CantorFrame extends javax.swing.JDialog {
         sobrenomeTxt = new javax.swing.JTextField();
         carregarFotoBtn = new javax.swing.JButton();
         tabelaPnl = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        cantoresTbl = new javax.swing.JTable();
         filtrosPnl = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         nomeFiltroTxt = new javax.swing.JTextField();
@@ -55,6 +55,11 @@ public class CantorFrame extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Cantor");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         botoesPnl.setBackground(new java.awt.Color(102, 153, 255));
 
@@ -75,6 +80,11 @@ public class CantorFrame extends javax.swing.JDialog {
         botoesPnl.add(salvarBtn);
 
         excluirBtn.setText("Excluir");
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(excluirBtn);
 
         camposPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -143,7 +153,7 @@ public class CantorFrame extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        cantoresTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -154,13 +164,23 @@ public class CantorFrame extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelaPnl.setViewportView(jTable1);
+        cantoresTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cantoresTblMouseClicked(evt);
+            }
+        });
+        tabelaPnl.setViewportView(cantoresTbl);
 
         filtrosPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel3.setText("Nome");
 
         pesquisarBtn.setText("Pesquisar");
+        pesquisarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout filtrosPnlLayout = new javax.swing.GroupLayout(filtrosPnl);
         filtrosPnl.setLayout(filtrosPnlLayout);
@@ -234,44 +254,26 @@ public class CantorFrame extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_carregarFotoBtnActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CantorFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        controller.preencheTabela();
+    }//GEN-LAST:event_formWindowOpened
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CantorFrame().setVisible(true);
-            }
-        });
-    }
+    private void cantoresTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cantoresTblMouseClicked
+        controller.carregaCantorDaLinha(getLinhaSelecionada());
+    }//GEN-LAST:event_cantoresTblMouseClicked
+
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        controller.excluirCantorDaLinha(getLinhaSelecionada());
+    }//GEN-LAST:event_excluirBtnActionPerformed
+
+    private void pesquisarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarBtnActionPerformed
+        controller.pesquisaPorNome(getNomeFiltro());
+    }//GEN-LAST:event_pesquisarBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoesPnl;
     private javax.swing.JPanel camposPnl;
+    private javax.swing.JTable cantoresTbl;
     private javax.swing.JButton carregarFotoBtn;
     private javax.swing.JButton excluirBtn;
     private javax.swing.JPanel filtrosPnl;
@@ -280,7 +282,6 @@ public class CantorFrame extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField nomeFiltroTxt;
     private javax.swing.JTextField nomeTxt;
     private javax.swing.JButton novoBtn;
@@ -292,13 +293,25 @@ public class CantorFrame extends javax.swing.JDialog {
 
     private CantorController controller 
             = new CantorController(this);
-            
+
+    public String getNomeFiltro() {
+        return nomeFiltroTxt.getText();
+    }
+    
     public String getNome() {
         return nomeTxt.getText();
     }
 
     public String getSobrenome() {
         return sobrenomeTxt.getText();
+    }
+    
+    public void setNome(String nome) {
+        nomeTxt.setText(nome);
+    }
+    
+    public void setSobreNome(String sobrenome) {
+        sobrenomeTxt.setText(sobrenome);
     }
     
     public void mostraMensagem(String mensagem) {
@@ -308,9 +321,21 @@ public class CantorFrame extends javax.swing.JDialog {
     public void limpaCampos() {
         nomeTxt.setText(null);
         sobrenomeTxt.setText(null);
+        setFoto(null);
     }
 
     public void setFoto(ImageIcon icone) {
         fotoLbl.setIcon(icone);
+    }
+
+    public void atualizaTabela(CantorTableModel cantorTableModel) {
+        if (cantoresTbl != null) {
+            cantoresTbl.setModel(cantorTableModel);
+            cantoresTbl.repaint();
+        }
+    }
+    
+    private int getLinhaSelecionada() {
+        return cantoresTbl.getSelectedRow();
     }
 }

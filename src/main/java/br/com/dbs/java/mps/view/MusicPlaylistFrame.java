@@ -88,7 +88,7 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void menuItemCantorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemCantorActionPerformed
-        new CantorFrame().setVisible(true);
+        new CantorFrame(this).setVisible(true);
     }//GEN-LAST:event_menuItemCantorActionPerformed
 
     /**
