@@ -28,7 +28,7 @@ public class CantorTableModel  extends AbstractTableModel {
 
     @Override
     public int getRowCount() {
-        return 10;
+        return cantores.size();
     }
 
     @Override
