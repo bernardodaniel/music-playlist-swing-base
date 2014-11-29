@@ -63,7 +63,9 @@ public class CantorTableModel  extends AbstractTableModel {
         return null;
     }
     
-    public List<Cantor> getCantores() {
-        return cantores;
+    public Cantor getCantor(int index) {
+        if (index >= cantores.size())
+            return null;
+        return cantores.get(index);
     }
 }

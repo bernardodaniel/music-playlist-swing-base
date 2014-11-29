@@ -71,7 +71,7 @@ public class CantorController {
     public void preencheTabela() {
         preencheTabela(todosCantores());
     }
-    
+
     private void preencheTabela(List<Cantor> lista) {
         cantorTableModel = new CantorTableModel(lista);
         view.atualizaTabela(cantorTableModel);
@@ -82,11 +82,7 @@ public class CantorController {
     }
 
     public void carregaCantorDaLinha(int linhaSelecionada) {
-        if (linhaSelecionada < cantorTableModel.getCantores().size()) 
-            cantor = cantorTableModel.getCantores().get(linhaSelecionada);
-        else
-            cantor = null;
-        
+        cantor = cantorTableModel.getCantor(linhaSelecionada);
         preencheCampos();
     }
 
@@ -101,7 +97,7 @@ public class CantorController {
     }
 
     public void excluirCantorDaLinha(int linhaSelecionada) {
-        cantor = cantorTableModel.getCantores().get(linhaSelecionada);
+        cantor = cantorTableModel.getCantor(linhaSelecionada);
         cantorDao.remove(cantor.getId());
         preencheTabela();
         view.limpaCampos();

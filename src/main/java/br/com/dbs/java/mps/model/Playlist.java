@@ -95,6 +95,13 @@ public class Playlist implements Serializable {
      */
     public Integer getDuracaoTotal() {
         return duracaoTotal;
+//        int segundos = 14400; 
+//        int segundo = segundos % 60; 
+//        int minutos = segundos / 60; 
+//        int minuto = minutos % 60; 
+//        int hora = minutos / 60; 
+//        String hms = String.format ("%02d:%02d:%02d", hora, minuto, segundo); 
+//        System.out.println (hms); // deve mostrar "04:00:00"
     }
 
 }
