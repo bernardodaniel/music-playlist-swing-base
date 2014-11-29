@@ -14,6 +14,7 @@ import br.com.dbs.java.mps.model.dao.hibernate.MusicaDaoHibernate;
 import br.com.dbs.java.mps.view.MusicaDialog;
 import br.com.dbs.java.mps.view.table.MusicaTableModel;
 import java.util.List;
+import javax.persistence.PersistenceException;
 
 /**
  *
@@ -57,7 +58,11 @@ public class MusicaController {
     }
 
     public void preencheTabela() {
-        musicaTableModel = new MusicaTableModel(musicaDao.lista());
+        preencheTabela(musicaDao.lista());
+    }
+
+    private void preencheTabela(final List<Musica> lista) {
+        musicaTableModel = new MusicaTableModel(lista);
         view.atualizaTabela(musicaTableModel);
     }
 
@@ -74,6 +79,30 @@ public class MusicaController {
             view.setCantor(musica.getCantor());
             view.setDuracao(musica.getDuracaoDate());
         }
+    }
+
+    public void pesquisa() {
+        List<Musica> musicas = musicaDao.pesquisaPorNome(view.getNomeFiltro());
+        preencheTabela(musicas);
+    }
+
+    public void novo() {
+        musica = null;
+        view.limpaCampos();
+    }
+
+    public void excluir(int linha) {
+        musica = musicaTableModel.getMusica(linha);
+        try {
+            musicaDao.remove(musica.getId());
+        } catch (RuntimeException e) {
+            view.mostraMensagem("Erro ao remover registro: " + e.getMessage());
+            return;
+        }
+        
+        novo();
+        preencheTabela();
+        view.mostraMensagem("Excluiu com sucesso");
     }
     
 }

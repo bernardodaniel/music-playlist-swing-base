@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +25,7 @@ public class Musica implements Serializable {
     @Column(nullable = false)
     private String nome;
     private Integer duracao;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "cantor_id")
     private Cantor cantor;
 
@@ -76,6 +77,8 @@ public class Musica implements Serializable {
     }
     
     public void setDuracao(Date duracao) {
+        if (duracao == null) 
+            return;
         Calendar cal = Calendar.getInstance();
         cal.setTime(duracao);
         final int minutos = cal.get(Calendar.MINUTE);
@@ -89,6 +92,28 @@ public class Musica implements Serializable {
 
     public void setCantor(Cantor cantor) {
         this.cantor = cantor;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.id);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Musica other = (Musica) obj;
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
+        return true;
     }
     
 }

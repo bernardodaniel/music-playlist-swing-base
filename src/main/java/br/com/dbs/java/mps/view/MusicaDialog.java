@@ -65,6 +65,11 @@ public class MusicaDialog extends javax.swing.JDialog {
         jLabel1.setText("Nome");
 
         pesquisarBtn.setText("Pesquisar");
+        pesquisarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pesquisarBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout filtroPnlLayout = new javax.swing.GroupLayout(filtroPnl);
         filtroPnl.setLayout(filtroPnlLayout);
@@ -159,6 +164,11 @@ public class MusicaDialog extends javax.swing.JDialog {
         botoesPnl.setBackground(new java.awt.Color(102, 153, 255));
 
         novoBtn.setText("Novo");
+        novoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                novoBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(novoBtn);
 
         salvarBtn.setText("Salvar");
@@ -170,6 +180,11 @@ public class MusicaDialog extends javax.swing.JDialog {
         botoesPnl.add(salvarBtn);
 
         excluirBtn.setText("Excluir");
+        excluirBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(excluirBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -214,6 +229,18 @@ public class MusicaDialog extends javax.swing.JDialog {
     private void musicasTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_musicasTblMouseClicked
         controller.carregaMusicaDaTabela(getLinhaSelecionada());
     }//GEN-LAST:event_musicasTblMouseClicked
+
+    private void pesquisarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarBtnActionPerformed
+        controller.pesquisa();
+    }//GEN-LAST:event_pesquisarBtnActionPerformed
+
+    private void novoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoBtnActionPerformed
+        controller.novo();
+    }//GEN-LAST:event_novoBtnActionPerformed
+
+    private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
+        controller.excluir(getLinhaSelecionada());
+    }//GEN-LAST:event_excluirBtnActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoesPnl;
@@ -280,6 +307,10 @@ public class MusicaDialog extends javax.swing.JDialog {
 
     public void setDuracao(Date duracao) {
         duracaoTxt.setValue(duracao);
+    }
+    
+    public String getNomeFiltro() {
+        return nomeFiltroTxt.getText();
     }
     
 }

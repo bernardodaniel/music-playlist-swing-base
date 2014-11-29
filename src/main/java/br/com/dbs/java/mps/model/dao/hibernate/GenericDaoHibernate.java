@@ -6,6 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 public class GenericDaoHibernate<T> 
@@ -66,7 +67,9 @@ public class GenericDaoHibernate<T>
             em.remove(entidade);
             em.getTransaction().commit();
         } catch (Exception e) {
+            e.printStackTrace();
             em.getTransaction().rollback();
+            throw new RuntimeException(e);
         } finally {
             JPAUtil.closeEntityManager();
         }

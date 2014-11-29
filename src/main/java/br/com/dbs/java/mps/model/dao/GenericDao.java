@@ -1,6 +1,7 @@
 package br.com.dbs.java.mps.model.dao;
 
 import java.util.List;
+import javax.persistence.PersistenceException;
 
 public interface GenericDao<T> {
     
@@ -8,7 +9,7 @@ public interface GenericDao<T> {
     
     void atualiza(T entidade);
     
-    void remove(Long id);
+    void remove(Long id) throws PersistenceException;
     
     List<T> lista();
     
