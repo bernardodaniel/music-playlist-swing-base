@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
@@ -28,6 +27,13 @@ public class Cantor implements Serializable {
     @OneToMany(mappedBy = "cantor")
     private List<Musica> musicas;
 
+    @Override
+    public String toString() {
+        return getNomeCompleto();
+    }
+
+    
+    
     public Long getId() {
         return id;
     }
@@ -76,6 +82,10 @@ public class Cantor implements Serializable {
 
     public List<Musica> getMusicas() {
         return musicas;
+    }
+
+    public String getNomeCompleto() {
+        return getNome() + " " + getSobrenome();
     }
 
 }
