@@ -1,13 +1,11 @@
 package br.com.dbs.java.mps.model;
 
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,6 +27,13 @@ public class Musica implements Serializable {
     @JoinColumn(name = "cantor_id")
     private Cantor cantor;
 
+    @Override
+    public String toString() {
+        return getNome() + " - " + getDuracao();
+    }
+
+    
+    
     public Long getId() {
         return id;
     }
@@ -41,6 +46,10 @@ public class Musica implements Serializable {
         this.nome = nome;
     }
 
+    public Integer getDuracaoInt() {
+        return duracao;
+    }
+    
     public String getDuracao() {
         if (duracao != null) {
             int minutos = getMinutosDuracao();

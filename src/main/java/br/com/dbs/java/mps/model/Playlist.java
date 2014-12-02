@@ -2,6 +2,7 @@ package br.com.dbs.java.mps.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -34,7 +35,7 @@ public class Playlist implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date dataDaCriacao;
     
-    private Integer duracaoTotal;
+    private Integer duracaoTotal = 0;
     
     @ManyToMany(cascade = CascadeType.REMOVE)
     @JoinTable(name = "playlist_musica")
@@ -42,6 +43,11 @@ public class Playlist implements Serializable {
 
     public void adicionaMusica(Musica musica) {
         musicas.add(musica);
+        somaDuracao(musica);
+    }
+    
+     public void removeMusica(Musica musica) {
+        musicas.remove(musica);
     }
 
     public Long getId() {
@@ -93,15 +99,17 @@ public class Playlist implements Serializable {
     /**
      * @return the duracaoTotal
      */
-    public Integer getDuracaoTotal() {
-        return duracaoTotal;
-//        int segundos = 14400; 
-//        int segundo = segundos % 60; 
-//        int minutos = segundos / 60; 
-//        int minuto = minutos % 60; 
-//        int hora = minutos / 60; 
-//        String hms = String.format ("%02d:%02d:%02d", hora, minuto, segundo); 
-//        System.out.println (hms); // deve mostrar "04:00:00"
+    public String getDuracaoTotal() {
+        int segundo = duracaoTotal % 60; 
+        int minutos = duracaoTotal / 60; 
+        int minuto = minutos % 60; 
+        int hora = minutos / 60; 
+        
+        return String.format ("%02d:%02d:%02d", hora, minuto, segundo); 
+    }
+
+    private void somaDuracao(Musica musica) {
+        duracaoTotal += musica.getDuracaoInt();
     }
 
 }
