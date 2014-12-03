@@ -8,10 +8,10 @@ import br.com.dbs.java.mps.model.dao.hibernate.MusicaDaoHibernate;
 import br.com.dbs.java.mps.model.dao.hibernate.PlaylistDaoHibernate;
 import br.com.dbs.java.mps.view.PlaylistDialog;
 import br.com.dbs.java.mps.view.PlaylistFormDialog;
+import br.com.dbs.java.mps.view.table.MusicaTableModel;
 import br.com.dbs.java.mps.view.table.MusicasPlaylistListModel;
-import java.util.ArrayList;
+import br.com.dbs.java.mps.view.table.PlaylistTableModel;
 import java.util.List;
-import javax.swing.DefaultListModel;
 
 
 public class PlaylistController {
@@ -23,6 +23,7 @@ public class PlaylistController {
     private MusicaDao musicaDao = new MusicaDaoHibernate();
     private MusicasPlaylistListModel listModelMusicasPlaylist = new MusicasPlaylistListModel();
     private MusicasPlaylistListModel listModelMusicasDisponiveis = new MusicasPlaylistListModel();
+    private PlaylistTableModel playlistTableModel;
 
     public PlaylistController(PlaylistDialog viewListagem) {
         this.viewListagem = viewListagem;
@@ -35,10 +36,14 @@ public class PlaylistController {
     public void salvar() {
         playlist.setNome(viewCadastro.getNome());        
         
-        playlistDao.adiciona(playlist);
+        if (playlist.getId() == null)
+            playlistDao.adiciona(playlist);
+        else 
+             playlistDao.atualiza(playlist);
         
         viewCadastro.mostraMensagem("Sucesso");
         viewCadastro.fecha();
+        carregaPlaylists();
     }
 
     public void carregaListaMusicasDisponiveis() {
@@ -70,6 +75,47 @@ public class PlaylistController {
         viewCadastro.atualizaListaMusicasDisponiveis(listModelMusicasDisponiveis);
         
         playlist.removeMusica(musica);
+    }
+
+    public void carregaPlaylists() {
+        playlistTableModel = new PlaylistTableModel(playlistDao.lista());
+        viewListagem.atualizaTabelaPlaylist(playlistTableModel);
+    }
+
+    public void carregaMusicasDaPlaylist(int selectedRow) {
+        playlist = playlistTableModel.getPlaylist(selectedRow);
+        MusicaTableModel musicaTableModel = new MusicaTableModel(playlist.getMusicas());
+        viewListagem.atualizaTabelaMusicasDaPlaylist(musicaTableModel);
+    }
+
+    public void carregaPlaylistNoForm() {
+        new PlaylistFormDialog(viewListagem, this, playlist).setVisible(true);
+    }
+
+    public void setPlaylist(Playlist playlist) {
+        this.playlist = playlist;
+    }
+
+    public void preencheFormularioEdicao() {
+        if (playlist == null)
+            viewCadastro.limpaCampos();
+        else {
+            viewCadastro.setNome(playlist.getNome());
+            viewCadastro.setDuracao(playlist.getDuracaoTotal());
+            listModelMusicasPlaylist = new MusicasPlaylistListModel();
+            listModelMusicasPlaylist.addList(playlist.getMusicas());
+            viewCadastro.atualizaListaMusicasPlaylist(listModelMusicasPlaylist);
+            
+            listModelMusicasDisponiveis.removeAll(playlist.getMusicas());
+        }
+        
+    }
+
+    public void excluir(int selectedRow) {
+        playlist = playlistTableModel.getPlaylist(selectedRow);
+        playlistDao.remove(playlist.getId());
+        viewListagem.mostraMensagem("Sucesso");
+        carregaPlaylists();
     }
     
 }

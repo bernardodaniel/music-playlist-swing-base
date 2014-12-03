@@ -6,6 +6,10 @@
 package br.com.dbs.java.mps.view;
 
 import br.com.dbs.java.mps.controller.PlaylistController;
+import br.com.dbs.java.mps.model.Playlist;
+import br.com.dbs.java.mps.view.table.MusicaTableModel;
+import br.com.dbs.java.mps.view.table.PlaylistTableModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -35,6 +39,8 @@ public class PlaylistDialog extends javax.swing.JDialog {
         botoesPnl = new javax.swing.JPanel();
         novaPlaylistBtn = new javax.swing.JButton();
         excluirPlaylistBtn = new javax.swing.JButton();
+        executarBtn = new javax.swing.JButton();
+        pararBtn = new javax.swing.JButton();
         playlistsPnl = new javax.swing.JScrollPane();
         playlistTbl = new javax.swing.JTable();
         musicasPnl = new javax.swing.JScrollPane();
@@ -42,8 +48,13 @@ public class PlaylistDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Playlist");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
-        botoesPnl.setBackground(new java.awt.Color(0, 121, 255));
+        botoesPnl.setLayout(new java.awt.GridLayout(4, 0));
 
         novaPlaylistBtn.setText("Nova Playlist");
         novaPlaylistBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -54,7 +65,18 @@ public class PlaylistDialog extends javax.swing.JDialog {
         botoesPnl.add(novaPlaylistBtn);
 
         excluirPlaylistBtn.setText("Excluir Playlist");
+        excluirPlaylistBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                excluirPlaylistBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(excluirPlaylistBtn);
+
+        executarBtn.setText("Executar");
+        botoesPnl.add(executarBtn);
+
+        pararBtn.setText("Parar");
+        botoesPnl.add(pararBtn);
 
         playlistTbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -67,6 +89,11 @@ public class PlaylistDialog extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        playlistTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                playlistTblMouseClicked(evt);
+            }
+        });
         playlistsPnl.setViewportView(playlistTbl);
 
         musicasTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -86,12 +113,15 @@ public class PlaylistDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(botoesPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(playlistsPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(musicasPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 229, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(musicasPnl)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(playlistsPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(botoesPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -99,10 +129,10 @@ public class PlaylistDialog extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(playlistsPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
-                    .addComponent(musicasPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(playlistsPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 166, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(musicasPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,17 +140,49 @@ public class PlaylistDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void novaPlaylistBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novaPlaylistBtnActionPerformed
-        new PlaylistFormDialog(this, controller, true).setVisible(true);
+        new PlaylistFormDialog(this, controller).setVisible(true);
     }//GEN-LAST:event_novaPlaylistBtnActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        controller.carregaPlaylists();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void playlistTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playlistTblMouseClicked
+        if (evt.getClickCount() == 1)
+            controller.carregaMusicasDaPlaylist(playlistTbl.getSelectedRow());
+        
+        if (evt.getClickCount() == 2)
+            controller.carregaPlaylistNoForm();
+    }//GEN-LAST:event_playlistTblMouseClicked
+
+    private void excluirPlaylistBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirPlaylistBtnActionPerformed
+        controller.excluir(playlistTbl.getSelectedRow());
+    }//GEN-LAST:event_excluirPlaylistBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoesPnl;
     private javax.swing.JButton excluirPlaylistBtn;
+    private javax.swing.JButton executarBtn;
     private javax.swing.JScrollPane musicasPnl;
     private javax.swing.JTable musicasTbl;
     private javax.swing.JButton novaPlaylistBtn;
+    private javax.swing.JButton pararBtn;
     private javax.swing.JTable playlistTbl;
     private javax.swing.JScrollPane playlistsPnl;
     // End of variables declaration//GEN-END:variables
+
+    public void atualizaTabelaPlaylist(PlaylistTableModel playlistTableModel) {
+        playlistTbl.setModel(playlistTableModel);
+        playlistTbl.repaint();
+    }
+
+    public void atualizaTabelaMusicasDaPlaylist(MusicaTableModel musicaTableModel) {
+        musicasTbl.setModel(musicaTableModel);
+        musicasTbl.repaint();
+    }
+
+    public void mostraMensagem(String sucesso) {
+        JOptionPane.showMessageDialog(this, sucesso);
+    }
 }

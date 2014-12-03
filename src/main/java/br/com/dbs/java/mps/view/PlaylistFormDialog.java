@@ -7,6 +7,7 @@ package br.com.dbs.java.mps.view;
 
 import br.com.dbs.java.mps.controller.PlaylistController;
 import br.com.dbs.java.mps.model.Musica;
+import br.com.dbs.java.mps.model.Playlist;
 import br.com.dbs.java.mps.view.table.MusicasPlaylistListModel;
 import java.util.List;
 import java.util.Vector;
@@ -25,11 +26,16 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
     /**
      * Creates new form PlaylistFormDialog
      */
-    public PlaylistFormDialog(JDialog parent, PlaylistController controller, boolean modal) {
-        super(parent, modal);
+    public PlaylistFormDialog(JDialog parent, PlaylistController controller, Playlist playlist) {
+        super(parent);
         this.controller = controller;
         this.controller.registraViewCadastro(this);
+        this.controller.setPlaylist(playlist);
         initComponents();
+    }
+
+    PlaylistFormDialog(PlaylistDialog aThis, PlaylistController controller) {
+        this(aThis, controller, new Playlist());
     }
 
     /**
@@ -201,6 +207,7 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         controller.carregaListaMusicasDisponiveis();
+        controller.preencheFormularioEdicao();
     }//GEN-LAST:event_formWindowOpened
 
     private void adicionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarBtnActionPerformed
@@ -255,5 +262,15 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
 
     public void setDuracao(String duracaoTotal) {
         duracaoPlaylistTxt.setText(duracaoTotal);
+    }
+
+    public void setNome(String nome) {
+        nomePlaylistTxt.setText(nome);
+    }
+
+    public void limpaCampos() {
+        setNome(null);
+        setDuracao(null);
+        atualizaListaMusicasPlaylist(null);
     }
 }

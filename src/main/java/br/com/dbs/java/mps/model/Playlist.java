@@ -100,6 +100,9 @@ public class Playlist implements Serializable {
      * @return the duracaoTotal
      */
     public String getDuracaoTotal() {
+        if (duracaoTotal == null)
+            return null;
+        
         int segundo = duracaoTotal % 60; 
         int minutos = duracaoTotal / 60; 
         int minuto = minutos % 60; 

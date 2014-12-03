@@ -6,7 +6,6 @@
 package br.com.dbs.java.mps.view.table;
 
 import br.com.dbs.java.mps.model.Musica;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
 
@@ -16,11 +15,18 @@ import javax.swing.DefaultListModel;
  */
 public class MusicasPlaylistListModel extends DefaultListModel<Musica> {
 
-    private List<Musica> musicas = new ArrayList<>();
- 
+    public MusicasPlaylistListModel() {
+        
+    }
     public void addList(List<Musica> musicas) {
         for (Musica musica : musicas) {
             addElement(musica);
+        }
+    }
+
+    public void removeAll(List<Musica> musicas) {
+        for (Musica musica : musicas) {
+            removeElement(musica);
         }
     }
     
