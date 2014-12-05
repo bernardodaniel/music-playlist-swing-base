@@ -81,6 +81,11 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
         menuSistema.setText("Sistema");
 
         menuItemUsuario.setText("Usuarios");
+        menuItemUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuItemUsuarioActionPerformed(evt);
+            }
+        });
         menuSistema.add(menuItemUsuario);
 
         barraDeMenu.add(menuSistema);
@@ -116,6 +121,10 @@ public class MusicPlaylistFrame extends javax.swing.JFrame {
     private void menuItemPlaylistActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemPlaylistActionPerformed
         new PlaylistDialog(this, false).setVisible(true);
     }//GEN-LAST:event_menuItemPlaylistActionPerformed
+
+    private void menuItemUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuItemUsuarioActionPerformed
+        new UsuarioDialog(this, false).setVisible(true);
+    }//GEN-LAST:event_menuItemUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
