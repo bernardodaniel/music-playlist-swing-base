@@ -73,9 +73,19 @@ public class PlaylistDialog extends javax.swing.JDialog {
         botoesPnl.add(excluirPlaylistBtn);
 
         executarBtn.setText("Executar");
+        executarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                executarBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(executarBtn);
 
         pararBtn.setText("Parar");
+        pararBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pararBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(pararBtn);
 
         playlistTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -149,15 +159,27 @@ public class PlaylistDialog extends javax.swing.JDialog {
 
     private void playlistTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playlistTblMouseClicked
         if (evt.getClickCount() == 1)
-            controller.carregaMusicasDaPlaylist(playlistTbl.getSelectedRow());
+            controller.carregaMusicasDaPlaylist(getSelectedPlaylistIndex());
         
         if (evt.getClickCount() == 2)
             controller.carregaPlaylistNoForm();
     }//GEN-LAST:event_playlistTblMouseClicked
 
     private void excluirPlaylistBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirPlaylistBtnActionPerformed
-        controller.excluir(playlistTbl.getSelectedRow());
+        controller.excluir(getSelectedPlaylistIndex());
     }//GEN-LAST:event_excluirPlaylistBtnActionPerformed
+
+    private void executarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executarBtnActionPerformed
+        controller.play(getSelectedPlaylistIndex());
+    }//GEN-LAST:event_executarBtnActionPerformed
+
+    private void pararBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararBtnActionPerformed
+        controller.stop(getSelectedPlaylistIndex());
+    }//GEN-LAST:event_pararBtnActionPerformed
+
+    private int getSelectedPlaylistIndex() {
+        return playlistTbl.getSelectedRow();
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

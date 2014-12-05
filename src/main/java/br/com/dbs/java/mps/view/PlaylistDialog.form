@@ -84,11 +84,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Executar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="executarBtnActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="pararBtn">
           <Properties>
             <Property name="text" type="java.lang.String" value="Parar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pararBtnActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
