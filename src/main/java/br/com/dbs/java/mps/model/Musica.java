@@ -1,6 +1,9 @@
 package br.com.dbs.java.mps.model;
 
+import com.sun.javafx.binding.StringFormatter;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,12 +39,50 @@ public class Musica implements Serializable {
         this.nome = nome;
     }
 
-    public Integer getDuracao() {
-        return duracao;
+    public String getDuracaoTexto() {
+        if (duracao == null) {
+            return null;
+        }
+        
+        int minutos = getDuracaoMinutos();
+        int segundos = getDuracaoSegundos();
+        String minutosESegundos = 
+                String.format("%02d:%02d", minutos, segundos);
+        return minutosESegundos;
     }
 
-    public void setDuracao(Integer duracao) {
-        this.duracao = duracao;
+    private int getDuracaoSegundos() {
+        int segundos = duracao % 60;
+        return segundos;
+    }
+
+    private int getDuracaoMinutos() {
+        int minutos = duracao / 60;
+        return minutos;
+    }
+    
+    public Date getDuracaoDate() {
+        if (duracao == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, getDuracaoMinutos());
+        calendar.set(Calendar.SECOND, getDuracaoSegundos());
+        return calendar.getTime();
+    }
+
+    public void setDuracao(Date duracao) {
+        if (duracao == null) {
+            this.duracao = null;
+            return;
+        }
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(duracao);
+        int minuto = calendar.get(Calendar.MINUTE);
+        int segundos = calendar.get(Calendar.SECOND);
+        
+        this.duracao = minuto * 60 + segundos;
     }
 
     public Cantor getCantor() {
