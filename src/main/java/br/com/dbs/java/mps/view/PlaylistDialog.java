@@ -6,6 +6,9 @@
 
 package br.com.dbs.java.mps.view;
 
+import br.com.dbs.java.mps.controller.PlaylistController;
+import br.com.dbs.java.mps.view.table.MusicaTableModel;
+import br.com.dbs.java.mps.view.table.PlaylistTableModel;
 import java.awt.Frame;
 
 /**
@@ -14,6 +17,9 @@ import java.awt.Frame;
  */
 public class PlaylistDialog extends javax.swing.JDialog {
 
+    private PlaylistController controller =
+            new PlaylistController(this);
+    
     public PlaylistDialog(Frame owner, boolean modal) {
         super(owner, modal);
         initComponents();
@@ -40,20 +46,40 @@ public class PlaylistDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Playlist");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         botoesCimaPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         botoesCimaPnl.setLayout(new java.awt.GridLayout(4, 0));
 
         novaPlaylistBtn.setText("Nova Playlist");
+        novaPlaylistBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                novaPlaylistBtnActionPerformed(evt);
+            }
+        });
         botoesCimaPnl.add(novaPlaylistBtn);
 
         excluirPlaylistBtn.setText("ExcluirPlaylist");
         botoesCimaPnl.add(excluirPlaylistBtn);
 
         executarBtn.setText("Executar");
+        executarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                executarBtnActionPerformed(evt);
+            }
+        });
         botoesCimaPnl.add(executarBtn);
 
         pararBtn.setText("Parar");
+        pararBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pararBtnActionPerformed(evt);
+            }
+        });
         botoesCimaPnl.add(pararBtn);
 
         playlistsPnl.setBackground(new java.awt.Color(204, 255, 204));
@@ -69,6 +95,11 @@ public class PlaylistDialog extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        playlistsTbl.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                playlistsTblMouseClicked(evt);
+            }
+        });
         playlistsPnl.setViewportView(playlistsTbl);
 
         musicasTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -114,6 +145,38 @@ public class PlaylistDialog extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        controller.preencheTabelaPlaylist();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void playlistsTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playlistsTblMouseClicked
+        
+        if (evt.getClickCount() == 1) {
+            controller.carregaMusicasDaPlaylistView(
+                    playlistsTbl.getSelectedRow());
+        }
+        
+        if (evt.getClickCount() == 2) {
+            final PlaylistFormDialog form = new PlaylistFormDialog(this, controller);
+            form.carregaPlaylistDaLinha(playlistsTbl.getSelectedRow());
+            form.setVisible(true);
+            
+        }
+        
+    }//GEN-LAST:event_playlistsTblMouseClicked
+
+    private void executarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_executarBtnActionPerformed
+        controller.executarPlaylist(playlistsTbl.getSelectedRow());
+    }//GEN-LAST:event_executarBtnActionPerformed
+
+    private void pararBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pararBtnActionPerformed
+        controller.pararPlaylist(playlistsTbl.getSelectedRow());
+    }//GEN-LAST:event_pararBtnActionPerformed
+
+    private void novaPlaylistBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novaPlaylistBtnActionPerformed
+        new PlaylistFormDialog(this, controller).setVisible(true);
+    }//GEN-LAST:event_novaPlaylistBtnActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoesCimaPnl;
     private javax.swing.JButton excluirPlaylistBtn;
@@ -125,4 +188,14 @@ public class PlaylistDialog extends javax.swing.JDialog {
     private javax.swing.JScrollPane playlistsPnl;
     private javax.swing.JTable playlistsTbl;
     // End of variables declaration//GEN-END:variables
+
+    public void atualizaTabelaPlaylist(PlaylistTableModel playlistTableModel) {
+        playlistsTbl.setModel(playlistTableModel);
+        playlistsTbl.repaint();
+    }
+
+    public void atualizaTabelaMusicas(MusicaTableModel musicaTableModelView) {
+        musicasTbl.setModel(musicaTableModelView);
+        musicasTbl.repaint();
+    }
 }

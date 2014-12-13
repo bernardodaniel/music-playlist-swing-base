@@ -6,18 +6,30 @@
 
 package br.com.dbs.java.mps.view;
 
+import br.com.dbs.java.mps.controller.PlaylistController;
+import br.com.dbs.java.mps.view.table.MusicaTableModel;
+import java.util.Date;
+import javax.swing.JDialog;
+
 /**
  *
  * @author DBS
  */
 public class PlaylistFormDialog extends javax.swing.JDialog {
 
+    private PlaylistController controller;
+    
     /**
      * Creates new form PlaylistFormDialog
      */
-    public PlaylistFormDialog(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public PlaylistFormDialog(JDialog parent, 
+            PlaylistController controller) {
+
+        super(parent, true);
+        this.controller = controller;
         initComponents();
+        this.controller.registraForm(this);
+        
     }
 
     /**
@@ -41,9 +53,16 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
         removerBtn = new javax.swing.JButton();
         musicasPlaylistPnl = new javax.swing.JScrollPane();
         musicasPlaylistTbl = new javax.swing.JTable();
+        botoesDeBaixoPnl = new javax.swing.JPanel();
+        salvarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Dados da Playlist");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
 
         camposPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -101,9 +120,19 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
         botoesPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         adicionarBtn.setText("Adicionar");
+        adicionarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                adicionarBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(adicionarBtn);
 
         removerBtn.setText("Remover");
+        removerBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removerBtnActionPerformed(evt);
+            }
+        });
         botoesPnl.add(removerBtn);
 
         musicasPlaylistTbl.setModel(new javax.swing.table.DefaultTableModel(
@@ -119,18 +148,29 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
         ));
         musicasPlaylistPnl.setViewportView(musicasPlaylistTbl);
 
+        botoesDeBaixoPnl.setBackground(new java.awt.Color(51, 153, 255));
+
+        salvarBtn.setText("salvar");
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBtnActionPerformed(evt);
+            }
+        });
+        botoesDeBaixoPnl.add(salvarBtn);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(musicasPlaylistPnl)
-                    .addComponent(musicasDisponiveisPnl)
-                    .addComponent(camposPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botoesPnl, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(musicasDisponiveisPnl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(camposPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addComponent(botoesDeBaixoPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,17 +182,38 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(botoesPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.DEFAULT_SIZE, 157, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botoesDeBaixoPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        controller.preencheTabelaMusicasDisponveis();
+    }//GEN-LAST:event_formWindowOpened
+
+    private void adicionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarBtnActionPerformed
+        controller.adicionaMusica(
+                musicasDisponiveisTbl.getSelectedRow());
+    }//GEN-LAST:event_adicionarBtnActionPerformed
+
+    private void removerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBtnActionPerformed
+        controller.removeMusica(
+                musicasPlaylistTbl.getSelectedRow());
+    }//GEN-LAST:event_removerBtnActionPerformed
+
+    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
+        controller.salvar();
+        dispose();
+    }//GEN-LAST:event_salvarBtnActionPerformed
+
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adicionarBtn;
+    private javax.swing.JPanel botoesDeBaixoPnl;
     private javax.swing.JPanel botoesPnl;
     private javax.swing.JPanel camposPnl;
     private javax.swing.JFormattedTextField duracaoTotalTxt;
@@ -164,5 +225,32 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
     private javax.swing.JTable musicasPlaylistTbl;
     private javax.swing.JTextField nomeTxt;
     private javax.swing.JButton removerBtn;
+    private javax.swing.JButton salvarBtn;
     // End of variables declaration//GEN-END:variables
+
+    public void atualizaTabelaMusicasDisponiveis(MusicaTableModel musicaTableModelDisponiveis) {
+        musicasDisponiveisTbl.setModel(musicaTableModelDisponiveis);
+        musicasDisponiveisTbl.repaint();
+    }
+
+    public void atualizaTabelaMusicasPlaylist(MusicaTableModel musicaTableModelPlaylist) {
+        musicasPlaylistTbl.setModel(musicaTableModelPlaylist);
+        musicasPlaylistTbl.repaint();
+    }
+
+    public String getNome() {
+        return nomeTxt.getText();
+    }
+
+    void carregaPlaylistDaLinha(int selectedRow) {
+        controller.preencheFormPlaylist(selectedRow);
+    }
+
+    public void setNome(String nome) {
+        nomeTxt.setText(nome);
+    }
+
+    public void setDuracao(Date duracaoTotalDate) {
+        duracaoTotalTxt.setValue(duracaoTotalDate);
+    }
 }

@@ -49,5 +49,20 @@ public class MusicaTableModel extends AbstractTableModel {
     public Musica getMusica(int selectedRow) {
         return musicas.get(selectedRow);
     }
+
+    public void adicionaMusica(Musica musica) {
+        musicas.add(musica);
+        fireTableDataChanged();
+    }
+
+    public void removeMusica(Musica musica) {
+        musicas.remove(musica);
+        fireTableDataChanged();
+    }
+
+    public void removeMusicas(List<Musica> musicas) {
+        this.musicas.removeAll(musicas);
+        fireTableDataChanged();
+    }
     
 }

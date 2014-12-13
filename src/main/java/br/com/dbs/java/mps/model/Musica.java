@@ -30,6 +30,13 @@ public class Musica implements Serializable {
     public Long getId() {
         return id;
     }
+    
+    public Integer getDuracao() {
+        if (duracao == null) {
+            return 0;
+        }
+        return duracao;
+    }
 
     public String getNome() {
         return nome;
