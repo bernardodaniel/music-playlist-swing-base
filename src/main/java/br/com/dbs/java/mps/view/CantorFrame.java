@@ -7,12 +7,12 @@
 package br.com.dbs.java.mps.view;
 
 import br.com.dbs.java.mps.controller.CantorController;
-import br.com.dbs.java.mps.view.table.CantorTableModel;
 import java.awt.Frame;
 import java.io.File;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -259,17 +259,19 @@ public class CantorFrame extends javax.swing.JDialog {
     }//GEN-LAST:event_formWindowOpened
 
     private void cantoresTblMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cantoresTblMouseClicked
-        controller.carregaCantorDaLinha(getLinhaSelecionada());
+        controller.preencheCampos(
+                cantoresTbl.getSelectedRow());
     }//GEN-LAST:event_cantoresTblMouseClicked
 
     private void excluirBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBtnActionPerformed
-        controller.excluirCantorDaLinha(getLinhaSelecionada());
+        controller.exclui(cantoresTbl.getSelectedRow());
     }//GEN-LAST:event_excluirBtnActionPerformed
 
     private void pesquisarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pesquisarBtnActionPerformed
-        controller.pesquisaPorNome(getNomeFiltro());
+        controller.pesquisa();
     }//GEN-LAST:event_pesquisarBtnActionPerformed
 
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel botoesPnl;
     private javax.swing.JPanel camposPnl;
@@ -327,15 +329,21 @@ public class CantorFrame extends javax.swing.JDialog {
     public void setFoto(ImageIcon icone) {
         fotoLbl.setIcon(icone);
     }
-
-    public void atualizaTabela(CantorTableModel cantorTableModel) {
-        if (cantoresTbl != null) {
-            cantoresTbl.setModel(cantorTableModel);
-            cantoresTbl.repaint();
-        }
-    }
-    
-    private int getLinhaSelecionada() {
-        return cantoresTbl.getSelectedRow();
     }
 }
+    
+    public void atualizaTabelaDeCantores(TableModel tableModel) {
+        cantoresTbl.setModel(tableModel);
+        cantoresTbl.repaint();
+    }
+
+    public void setNome(String nome) {
+        nomeTxt.setText(nome);
+    }
+
+    public void setSobrenome(String sobrenome) {
+        sobrenomeTxt.setText(sobrenome);
+    }
+
+    public String getNomeFiltro() {
+        return nomeFiltroTxt.getText();

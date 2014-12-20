@@ -14,9 +14,13 @@ public class CantorDaoHibernate
     @Override
     public List<Cantor> pesquisaPorNome(String nome) {
         EntityManager em = JPAUtil.createEntityManager();
-        Query q = em.createQuery("select c from Cantor c where c.nome like :nome");
-        q.setParameter("nome", nome + "%");
-        return q.getResultList();
+        
+        Query q = em.createQuery(
+                "select c from Cantor c where lower(c.nome) like :nome");
+        q.setParameter("nome", nome.toLowerCase() + "%");
+        
+        List resultList = q.getResultList();
+        return resultList;
     }
     
 }

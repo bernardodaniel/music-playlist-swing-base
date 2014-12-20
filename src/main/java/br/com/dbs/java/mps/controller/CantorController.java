@@ -67,44 +67,49 @@ public class CantorController {
                             Level.SEVERE, null, ex);
         }
     }
-
+    
     public void preencheTabela() {
-        preencheTabela(todosCantores());
-    }
-
-    private void preencheTabela(List<Cantor> lista) {
+        List<Cantor> lista = cantorDao.lista();
         cantorTableModel = new CantorTableModel(lista);
-        view.atualizaTabela(cantorTableModel);
-    }
- 
-    private List<Cantor> todosCantores() {
-        return cantorDao.lista();
+        view.atualizaTabelaDeCantores(cantorTableModel);
     }
 
-    public void carregaCantorDaLinha(int linhaSelecionada) {
-        cantor = cantorTableModel.getCantor(linhaSelecionada);
-        preencheCampos();
+    public void preencheCampos(int linhaSelecionada) {
+        cantor = 
+                cantorTableModel.getCantor(linhaSelecionada);
+        
+        view.setNome(cantor.getNome());
+        view.setSobrenome(cantor.getSobrenome());
+        view.setFoto(ImagemUtil.
+                converteByteEmIcone(cantor.getFoto()));
     }
 
-    private void preencheCampos() {
-        if (cantor == null) {
-            view.limpaCampos();
-        } else {
-            view.setNome(cantor.getNome());
-            view.setSobreNome(cantor.getSobrenome());
-            view.setFoto(ImagemUtil.converteByteEmIcone(cantor.getFoto()));
-        }
-    }
-
-    public void excluirCantorDaLinha(int linhaSelecionada) {
+    public void exclui(int linhaSelecionada) {
         cantor = cantorTableModel.getCantor(linhaSelecionada);
         cantorDao.remove(cantor.getId());
         preencheTabela();
-        view.limpaCampos();
+        view.mostraMensagem("Cantor excluído!");
     }
 
-    public void pesquisaPorNome(String nome) {
-        preencheTabela(cantorDao.pesquisaPorNome(nome));
+    public void pesquisa() {
+        final String nomeFiltro = view.getNomeFiltro();
+        
+        List<Cantor> cantores;
+        
+        if (nomeFiltro == null || nomeFiltro.isEmpty()) {
+            cantores = cantorDao.lista();
+        } else {
+            cantores = cantorDao.pesquisaPorNome(nomeFiltro);
+        }
+        
+        cantorTableModel = new CantorTableModel(cantores);
+        view.atualizaTabelaDeCantores(cantorTableModel);
     }
+    
+    
+    
+    
+    
+    
     
 }

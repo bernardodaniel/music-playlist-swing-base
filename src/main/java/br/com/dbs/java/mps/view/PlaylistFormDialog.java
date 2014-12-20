@@ -3,21 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package br.com.dbs.java.mps.view;
 
 import br.com.dbs.java.mps.controller.PlaylistController;
-import br.com.dbs.java.mps.model.Musica;
-import br.com.dbs.java.mps.model.Playlist;
-import br.com.dbs.java.mps.view.table.MusicasPlaylistListModel;
-import java.util.List;
-import java.util.Vector;
+import br.com.dbs.java.mps.view.table.MusicaTableModel;
+import java.util.Date;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
-import javax.swing.ListModel;
 
 /**
  *
- * @author daniel
+ * @author DBS
  */
 public class PlaylistFormDialog extends javax.swing.JDialog {
 
@@ -26,16 +22,14 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
     /**
      * Creates new form PlaylistFormDialog
      */
-    public PlaylistFormDialog(JDialog parent, PlaylistController controller, Playlist playlist) {
-        super(parent);
-        this.controller = controller;
-        this.controller.registraViewCadastro(this);
-        this.controller.setPlaylist(playlist);
-        initComponents();
-    }
+    public PlaylistFormDialog(JDialog parent, 
+            PlaylistController controller) {
 
-    PlaylistFormDialog(PlaylistDialog aThis, PlaylistController controller) {
-        this(aThis, controller, new Playlist());
+        super(parent, true);
+        this.controller = controller;
+        initComponents();
+        this.controller.registraForm(this);
+        
     }
 
     /**
@@ -47,230 +41,216 @@ public class PlaylistFormDialog extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        botoesPnl = new javax.swing.JPanel();
-        salvarBtn = new javax.swing.JButton();
-        playlistFormPnl = new javax.swing.JPanel();
+        camposPnl = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        nomePlaylistTxt = new javax.swing.JTextField();
+        nomeTxt = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        duracaoPlaylistTxt = new javax.swing.JTextField();
-        musicasDisponivelPnl = new javax.swing.JPanel();
-        musicasDisponiveisScrollPnl = new javax.swing.JScrollPane();
-        musicasDisponiveisLst = new javax.swing.JList();
-        musicasPlaylistPnl = new javax.swing.JPanel();
-        musicasPlaylistScrollPnl = new javax.swing.JScrollPane();
-        musicasPlaylistLst = new javax.swing.JList();
-        botoesControlePnl = new javax.swing.JPanel();
+        duracaoTotalTxt = new javax.swing.JFormattedTextField();
+        musicasDisponiveisPnl = new javax.swing.JScrollPane();
+        musicasDisponiveisTbl = new javax.swing.JTable();
+        botoesPnl = new javax.swing.JPanel();
         adicionarBtn = new javax.swing.JButton();
         removerBtn = new javax.swing.JButton();
+        musicasPlaylistPnl = new javax.swing.JScrollPane();
+        musicasPlaylistTbl = new javax.swing.JTable();
+        botoesDeBaixoPnl = new javax.swing.JPanel();
+        salvarBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Cadastro de Playlist");
+        setTitle("Dados da Playlist");
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
             }
         });
 
-        botoesPnl.setBackground(new java.awt.Color(1, 83, 254));
+        camposPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        salvarBtn.setText("Salvar");
-        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                salvarBtnActionPerformed(evt);
+        jLabel1.setText("Nome da Playlist");
+
+        jLabel2.setText("Duração Total");
+
+        duracaoTotalTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getTimeInstance())));
+
+        javax.swing.GroupLayout camposPnlLayout = new javax.swing.GroupLayout(camposPnl);
+        camposPnl.setLayout(camposPnlLayout);
+        camposPnlLayout.setHorizontalGroup(
+            camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(camposPnlLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(camposPnlLayout.createSequentialGroup()
+                        .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(duracaoTotalTxt, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(camposPnlLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(66, 66, 66))))
+        );
+        camposPnlLayout.setVerticalGroup(
+            camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(camposPnlLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(camposPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nomeTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(duracaoTotalTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+
+        musicasDisponiveisTbl.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        });
-        botoesPnl.add(salvarBtn);
+        ));
+        musicasDisponiveisPnl.setViewportView(musicasDisponiveisTbl);
 
-        playlistFormPnl.setBorder(javax.swing.BorderFactory.createTitledBorder("Playlist"));
+        botoesPnl.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setText("Nome");
-
-        jLabel2.setText("Duração");
-
-        javax.swing.GroupLayout playlistFormPnlLayout = new javax.swing.GroupLayout(playlistFormPnl);
-        playlistFormPnl.setLayout(playlistFormPnlLayout);
-        playlistFormPnlLayout.setHorizontalGroup(
-            playlistFormPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(playlistFormPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(nomePlaylistTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(duracaoPlaylistTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        playlistFormPnlLayout.setVerticalGroup(
-            playlistFormPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(playlistFormPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                .addComponent(jLabel1)
-                .addComponent(nomePlaylistTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel2)
-                .addComponent(duracaoPlaylistTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        musicasDisponivelPnl.setBorder(javax.swing.BorderFactory.createTitledBorder("Músicas Disponíveis"));
-
-        musicasDisponiveisScrollPnl.setViewportView(musicasDisponiveisLst);
-
-        javax.swing.GroupLayout musicasDisponivelPnlLayout = new javax.swing.GroupLayout(musicasDisponivelPnl);
-        musicasDisponivelPnl.setLayout(musicasDisponivelPnlLayout);
-        musicasDisponivelPnlLayout.setHorizontalGroup(
-            musicasDisponivelPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(musicasDisponivelPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(musicasDisponiveisScrollPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        musicasDisponivelPnlLayout.setVerticalGroup(
-            musicasDisponivelPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(musicasDisponiveisScrollPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-
-        musicasPlaylistPnl.setBorder(javax.swing.BorderFactory.createTitledBorder("Músicas da Playlist"));
-
-        musicasPlaylistScrollPnl.setViewportView(musicasPlaylistLst);
-
-        javax.swing.GroupLayout musicasPlaylistPnlLayout = new javax.swing.GroupLayout(musicasPlaylistPnl);
-        musicasPlaylistPnl.setLayout(musicasPlaylistPnlLayout);
-        musicasPlaylistPnlLayout.setHorizontalGroup(
-            musicasPlaylistPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(musicasPlaylistPnlLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(musicasPlaylistScrollPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        musicasPlaylistPnlLayout.setVerticalGroup(
-            musicasPlaylistPnlLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(musicasPlaylistScrollPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-        );
-
-        botoesControlePnl.setLayout(new java.awt.GridLayout(10, 0));
-
-        adicionarBtn.setText(">>");
+        adicionarBtn.setText("Adicionar");
         adicionarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 adicionarBtnActionPerformed(evt);
             }
         });
-        botoesControlePnl.add(adicionarBtn);
+        botoesPnl.add(adicionarBtn);
 
-        removerBtn.setText("<<");
+        removerBtn.setText("Remover");
         removerBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removerBtnActionPerformed(evt);
             }
         });
-        botoesControlePnl.add(removerBtn);
+        botoesPnl.add(removerBtn);
+
+        musicasPlaylistTbl.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        musicasPlaylistPnl.setViewportView(musicasPlaylistTbl);
+
+        botoesDeBaixoPnl.setBackground(new java.awt.Color(51, 153, 255));
+
+        salvarBtn.setText("salvar");
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBtnActionPerformed(evt);
+            }
+        });
+        botoesDeBaixoPnl.add(salvarBtn);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(playlistFormPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(musicasDisponivelPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(botoesControlePnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(musicasDisponiveisPnl, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(camposPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botoesPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addComponent(botoesDeBaixoPnl, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(playlistFormPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(camposPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(musicasDisponiveisPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(musicasDisponivelPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(botoesControlePnl, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(botoesPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(botoesPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(musicasPlaylistPnl, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botoesDeBaixoPnl, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
-        controller.salvar();
-    }//GEN-LAST:event_salvarBtnActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        controller.carregaListaMusicasDisponiveis();
-        controller.preencheFormularioEdicao();
+        controller.preencheTabelaMusicasDisponveis();
     }//GEN-LAST:event_formWindowOpened
 
     private void adicionarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_adicionarBtnActionPerformed
-        controller.adicionarMusicaNaPlaylist(musicasDisponiveisLst.getSelectedValue());
+        controller.adicionaMusica(
+                musicasDisponiveisTbl.getSelectedRow());
     }//GEN-LAST:event_adicionarBtnActionPerformed
 
     private void removerBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removerBtnActionPerformed
-        controller.removerMusicaDaPlayList(musicasPlaylistLst.getSelectedValue());
+        controller.removeMusica(
+                musicasPlaylistTbl.getSelectedRow());
     }//GEN-LAST:event_removerBtnActionPerformed
 
-  
+    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
+        controller.salvar();
+        dispose();
+    }//GEN-LAST:event_salvarBtnActionPerformed
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton adicionarBtn;
-    private javax.swing.JPanel botoesControlePnl;
+    private javax.swing.JPanel botoesDeBaixoPnl;
     private javax.swing.JPanel botoesPnl;
-    private javax.swing.JTextField duracaoPlaylistTxt;
+    private javax.swing.JPanel camposPnl;
+    private javax.swing.JFormattedTextField duracaoTotalTxt;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JList musicasDisponiveisLst;
-    private javax.swing.JScrollPane musicasDisponiveisScrollPnl;
-    private javax.swing.JPanel musicasDisponivelPnl;
-    private javax.swing.JList musicasPlaylistLst;
-    private javax.swing.JPanel musicasPlaylistPnl;
-    private javax.swing.JScrollPane musicasPlaylistScrollPnl;
-    private javax.swing.JTextField nomePlaylistTxt;
-    private javax.swing.JPanel playlistFormPnl;
+    private javax.swing.JScrollPane musicasDisponiveisPnl;
+    private javax.swing.JTable musicasDisponiveisTbl;
+    private javax.swing.JScrollPane musicasPlaylistPnl;
+    private javax.swing.JTable musicasPlaylistTbl;
+    private javax.swing.JTextField nomeTxt;
     private javax.swing.JButton removerBtn;
     private javax.swing.JButton salvarBtn;
     // End of variables declaration//GEN-END:variables
 
+    public void atualizaTabelaMusicasDisponiveis(MusicaTableModel musicaTableModelDisponiveis) {
+        musicasDisponiveisTbl.setModel(musicaTableModelDisponiveis);
+        musicasDisponiveisTbl.repaint();
+    }
+
+    public void atualizaTabelaMusicasPlaylist(MusicaTableModel musicaTableModelPlaylist) {
+        musicasPlaylistTbl.setModel(musicaTableModelPlaylist);
+        musicasPlaylistTbl.repaint();
+    }
+
     public String getNome() {
-        return nomePlaylistTxt.getText();
+        return nomeTxt.getText();
     }
 
-    public void mostraMensagem(String sucesso) {
-        JOptionPane.showMessageDialog(this, sucesso);
-    }
-
-    public void atualizaListaMusicasDisponiveis(ListModel model) {
-        musicasDisponiveisLst.setModel(model);
-        musicasDisponiveisLst.repaint();
-    }
-
-    public void atualizaListaMusicasPlaylist(MusicasPlaylistListModel listModelMusicasPlaylist) {
-        musicasPlaylistLst.setModel(listModelMusicasPlaylist);
-        musicasPlaylistLst.repaint();
-    }
-
-    public void fecha() {
-        dispose();
-    }
-
-    public void setDuracao(String duracaoTotal) {
-        duracaoPlaylistTxt.setText(duracaoTotal);
+    void carregaPlaylistDaLinha(int selectedRow) {
+        controller.preencheFormPlaylist(selectedRow);
     }
 
     public void setNome(String nome) {
-        nomePlaylistTxt.setText(nome);
+        nomeTxt.setText(nome);
     }
 
-    public void limpaCampos() {
-        setNome(null);
-        setDuracao(null);
-        atualizaListaMusicasPlaylist(null);
+    public void setDuracao(Date duracaoTotalDate) {
+        duracaoTotalTxt.setValue(duracaoTotalDate);
     }
 }

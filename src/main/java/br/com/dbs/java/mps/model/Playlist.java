@@ -43,11 +43,30 @@ public class Playlist implements Serializable {
 
     public void adicionaMusica(Musica musica) {
         musicas.add(musica);
-        somaDuracao(musica);
+        duracaoTotal += musica.getDuracao();
     }
     
-     public void removeMusica(Musica musica) {
+    public void removeMusica(Musica musica) {
         musicas.remove(musica);
+        duracaoTotal -= musica.getDuracao();
+    }
+    
+    public Date getDuracaoTotalDate() {
+        if (duracaoTotal == null) {
+            return null;
+        }
+        
+        int segundos = duracaoTotal %60;
+        int horasEmMinutos = duracaoTotal /60;
+        int minutos = horasEmMinutos %60;
+        int horas = horasEmMinutos /60;
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR, horas);
+        calendar.set(Calendar.MINUTE, minutos);
+        calendar.set(Calendar.SECOND, segundos);
+        
+        return calendar.getTime();
     }
 
     public Long getId() {

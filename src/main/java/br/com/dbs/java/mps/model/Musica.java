@@ -1,9 +1,9 @@
 package br.com.dbs.java.mps.model;
 
+import com.sun.javafx.binding.StringFormatter;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,6 +37,13 @@ public class Musica implements Serializable {
     public Long getId() {
         return id;
     }
+    
+    public Integer getDuracao() {
+        if (duracao == null) {
+            return 0;
+        }
+        return duracao;
+    }
 
     public String getNome() {
         return nome;
@@ -46,53 +53,18 @@ public class Musica implements Serializable {
         this.nome = nome;
     }
 
-    public Integer getDuracaoInt() {
-        return duracao;
-    }
-    
-    public String getDuracao() {
-        if (duracao != null) {
-            int minutos = getMinutosDuracao();
-            int segundos = getSegundosDuracao();
-                    
-            return String.format("%d:%02d", minutos, segundos);
-        }
-        return null;
-    }
-
-    private int getSegundosDuracao() {
-        int segundos = duracao % 60;
-        return segundos;
-    }
-
-    private int getMinutosDuracao() {
-        int minutos = duracao / 60;
-        return minutos;
-    }
-    
-    public Date getDuracaoDate() {
-        if (duracao == null)
+    public String getDuracaoTexto() {
+        if (duracao == null) {
             return null;
+        }
         
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.MINUTE, getMinutosDuracao());
-        cal.set(Calendar.SECOND, getSegundosDuracao());
-        
-        return cal.getTime();
+        int minutos = getDuracaoMinutos();
+        int segundos = getDuracaoSegundos();
+        String minutosESegundos = 
+                String.format("%02d:%02d", minutos, segundos);
+        return minutosESegundos;
     }
 
-    public void setDuracao(Integer duracao) {
-        this.duracao = duracao;
-    }
-    
-    public void setDuracao(Date duracao) {
-        if (duracao == null) 
-            return;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(duracao);
-        final int minutos = cal.get(Calendar.MINUTE);
-        final int segundos = cal.get(Calendar.SECOND);
-        this.duracao = (minutos * 60) + segundos;
     }
 
     public Cantor getCantor() {
@@ -126,3 +98,35 @@ public class Musica implements Serializable {
     }
     
 }
+    private int getDuracaoSegundos() {
+        int segundos = duracao % 60;
+        return segundos;
+    }
+
+    private int getDuracaoMinutos() {
+        int minutos = duracao / 60;
+        return minutos;
+    }
+    
+    public Date getDuracaoDate() {
+        if (duracao == null) {
+            return null;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, getDuracaoMinutos());
+        calendar.set(Calendar.SECOND, getDuracaoSegundos());
+        return calendar.getTime();
+    }
+
+    public void setDuracao(Date duracao) {
+        if (duracao == null) {
+            this.duracao = null;
+            return;
+        }
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(duracao);
+        int minuto = calendar.get(Calendar.MINUTE);
+        int segundos = calendar.get(Calendar.SECOND);
+        
+        this.duracao = minuto * 60 + segundos;

@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 
@@ -29,6 +28,13 @@ public class Cantor implements Serializable {
     @OneToMany(mappedBy = "cantor")
     private List<Musica> musicas;
 
+    @Override
+    public String toString() {
+        return getNomeCompleto();
+    }
+
+    
+    
     public Long getId() {
         return id;
     }
@@ -79,35 +85,8 @@ public class Cantor implements Serializable {
         return musicas;
     }
 
-    @Override
-    public String toString() {
-        return nomeCompleto();
-    }
-    
-    private String nomeCompleto() {
+    public String getNomeCompleto() {
         return getNome() + " " + getSobrenome();
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Cantor other = (Cantor) obj;
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return true;
-    }
- 
 }

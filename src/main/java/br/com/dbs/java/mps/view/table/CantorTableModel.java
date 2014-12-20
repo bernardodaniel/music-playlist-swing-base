@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.dbs.java.mps.view.table;
 
 import br.com.dbs.java.mps.model.Cantor;
@@ -10,20 +5,16 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-/**
- *
- * @author daniel
- */
-public class CantorTableModel  extends AbstractTableModel {
+public class CantorTableModel 
+    extends AbstractTableModel {
     
-    private static final long serialVersionUID = 3547632541183372655L;
-    
+    private List<Cantor> cantores = new ArrayList<Cantor>();
     private String[] colunas = {"ID", "Nome", "Sobrenome"};
     
-    private List<Cantor> cantores = new ArrayList<>();
-    
     public CantorTableModel(List<Cantor> cantores) {
-        this.cantores = cantores;
+        if (cantores != null) {
+            this.cantores = cantores;
+        }
     }
 
     @Override
@@ -37,20 +28,8 @@ public class CantorTableModel  extends AbstractTableModel {
     }
 
     @Override
-    public String getColumnName(int column) {
-        return colunas[column];
-    }
-
-    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        
-        if (cantores == null || cantores.isEmpty())
-            return null;
-        
-        if (rowIndex >= cantores.size())
-            return null;
-        
-        final Cantor cantor = cantores.get(rowIndex);
+        Cantor cantor = cantores.get(rowIndex);
         
         switch (columnIndex) {
             case 0:
@@ -62,10 +41,14 @@ public class CantorTableModel  extends AbstractTableModel {
         }
         return null;
     }
-    
-    public Cantor getCantor(int index) {
-        if (index >= cantores.size())
-            return null;
-        return cantores.get(index);
+
+    @Override
+    public String getColumnName(int column) {
+        return colunas[column];
     }
+
+    public Cantor getCantor(int linhaSelecionada) {
+        return cantores.get(linhaSelecionada);
+    }
+    
 }

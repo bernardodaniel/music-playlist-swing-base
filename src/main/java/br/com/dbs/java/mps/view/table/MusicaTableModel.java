@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.dbs.java.mps.view.table;
 
 import br.com.dbs.java.mps.model.Musica;
@@ -10,17 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
-/**
- *
- * @author daniel
- */
 public class MusicaTableModel extends AbstractTableModel {
-    
-    private static final long serialVersionUID = -2265702537261265251L;
 
-    private List<Musica> musicas = new ArrayList<>();
-    private String[] colunas = {"id", "nome", "duração", "cantor"};
-    
+    private List<Musica> musicas = new ArrayList<Musica>();
+    private String[] colunas = {"ID", "Nome", "Duração", "Cantor"};
+
     public MusicaTableModel(List<Musica> musicas) {
         this.musicas = musicas;
     }
@@ -37,13 +26,7 @@ public class MusicaTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if (musicas == null || musicas.isEmpty())
-            return null;
-        
-        if (rowIndex >= musicas.size())
-            return null;
-        
-        Musica musica = getMusica(rowIndex);
+        Musica musica = musicas.get(rowIndex);
         
         switch (columnIndex) {
             case 0:
@@ -51,11 +34,10 @@ public class MusicaTableModel extends AbstractTableModel {
             case 1:
                 return musica.getNome();
             case 2:
-                return musica.getDuracao();
+                return musica.getDuracaoTexto();
             case 3:
                 return musica.getCantor();
         }
-        
         return null;
     }
 
@@ -63,11 +45,24 @@ public class MusicaTableModel extends AbstractTableModel {
     public String getColumnName(int column) {
         return colunas[column];
     }
-    
-    public Musica getMusica(int rowIndex) {
-        if (rowIndex >= musicas.size())
-            return null;
-        return musicas.get(rowIndex);
+
+    public Musica getMusica(int selectedRow) {
+        return musicas.get(selectedRow);
+    }
+
+    public void adicionaMusica(Musica musica) {
+        musicas.add(musica);
+        fireTableDataChanged();
+    }
+
+    public void removeMusica(Musica musica) {
+        musicas.remove(musica);
+        fireTableDataChanged();
+    }
+
+    public void removeMusicas(List<Musica> musicas) {
+        this.musicas.removeAll(musicas);
+        fireTableDataChanged();
     }
     
 }

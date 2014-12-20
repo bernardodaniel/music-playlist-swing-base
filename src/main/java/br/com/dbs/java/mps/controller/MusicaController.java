@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package br.com.dbs.java.mps.controller;
 
 import br.com.dbs.java.mps.model.Cantor;
@@ -14,38 +10,36 @@ import br.com.dbs.java.mps.model.dao.hibernate.MusicaDaoHibernate;
 import br.com.dbs.java.mps.view.MusicaDialog;
 import br.com.dbs.java.mps.view.table.MusicaTableModel;
 import java.util.List;
-import javax.persistence.PersistenceException;
 
-/**
- *
- * @author daniel
- */
 public class MusicaController {
-    private final MusicaDialog view;
-    private MusicaDao musicaDao = new MusicaDaoHibernate();
-    private CantorDao cantorDao = new CantorDaoHibernate();
+
+    private MusicaDialog view;
+    private CantorDao cantorDao =
+            new CantorDaoHibernate();
     private Musica musica;
-    private MusicaTableModel musicaTableModel;
+    private MusicaDao musicaDao =
+            new MusicaDaoHibernate();
+    private MusicaTableModel tableModel;
     
-    public MusicaController(MusicaDialog view) {
-        this.view = view;
+    public MusicaController(MusicaDialog musicaDialog) {
+        this.view = musicaDialog;
     }
 
-    public void preencheComboBoxCantor() {
+    public void preencheCantores() {
         List<Cantor> cantores = cantorDao.lista();
         for (Cantor cantor : cantores) {
-            view.adicionaCantorNoCombo(cantor);
+            view.adicionaCantorNoComboBox(cantor);
         }
     }
 
     public void salvar() {
-         if (musica == null) {
+        if (musica == null) {
             musica = new Musica();
         }
         
         musica.setNome(view.getNome());
-        musica.setDuracao(view.getDuracao());
         musica.setCantor(view.getCantorSelecionado());
+        musica.setDuracao(view.getDuracao());
         
         if (musica.getId() == null) {
             musicaDao.adiciona(musica);
@@ -53,56 +47,36 @@ public class MusicaController {
             musicaDao.atualiza(musica);
         }
         
-        preencheTabela();
-        view.mostraMensagem("Salvo com sucesso!");
+        preencheMusicas();
+        view.mostraMensagem("Música salva com sucesso!");
     }
 
-    public void preencheTabela() {
-        preencheTabela(musicaDao.lista());
+    public void preencheMusicas() {
+        List<Musica> musicas = musicaDao.lista();
+        tableModel = new MusicaTableModel(musicas);
+        view.atualizaTabelaDeMusicas(tableModel);
     }
 
-    private void preencheTabela(final List<Musica> lista) {
-        musicaTableModel = new MusicaTableModel(lista);
-        view.atualizaTabela(musicaTableModel);
+    public void carregaMusica(int selectedRow) {
+        musica = tableModel.getMusica(selectedRow);
+        view.setNomeDaMusica(musica.getNome());
+        view.setCantor(musica.getCantor());
+        view.setDuracao(musica.getDuracaoDate());
     }
 
-    public void carregaMusicaDaTabela(int linhaSelecionada) {
-        musica = musicaTableModel.getMusica(linhaSelecionada);
-        preencheCampos();
+    public void excluir(int selectedRow) {
+        musica = tableModel.getMusica(selectedRow);
+        musicaDao.remove(musica.getId());
+        preencheMusicas();
     }
 
-    private void preencheCampos() {
-        if (musica == null) {
-            view.limpaCampos();
-        } else {
-            view.setMusica(musica.getNome());
-            view.setCantor(musica.getCantor());
-            view.setDuracao(musica.getDuracaoDate());
-        }
-    }
-
-    public void pesquisa() {
-        List<Musica> musicas = musicaDao.pesquisaPorNome(view.getNomeFiltro());
-        preencheTabela(musicas);
-    }
-
-    public void novo() {
-        musica = null;
-        view.limpaCampos();
-    }
-
-    public void excluir(int linha) {
-        musica = musicaTableModel.getMusica(linha);
-        try {
-            musicaDao.remove(musica.getId());
-        } catch (RuntimeException e) {
-            view.mostraMensagem("Erro ao remover registro: " + e.getMessage());
-            return;
-        }
+    public void pesquisar() {
+        String nomeFiltro = view.getNomeFiltro();
+        List<Musica> musicas = 
+                musicaDao.pesquisaPorNome(nomeFiltro);
         
-        novo();
-        preencheTabela();
-        view.mostraMensagem("Excluiu com sucesso");
+        tableModel = new MusicaTableModel(musicas);
+        view.atualizaTabelaDeMusicas(tableModel);
     }
     
 }
